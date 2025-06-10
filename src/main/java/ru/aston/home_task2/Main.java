@@ -18,13 +18,13 @@ public class Main {
         UserDao userDao = new UserDaoImpl(ConnectionManager.getSessionFactory());
         UserService userService = new UserServiceImpl(userDao);
 
-        User user1 = new User("Ignat", "ignat@gmail.com", 25);
+        User user1 = new User("Ignat", "ignatkoka@gmail.com", 25);
         userService.save(user1);
         user1.setAge(50);
         user1.setName("Nick");
         System.out.println(userService.update(user1));
         System.out.println("-----------------");
-        System.out.println(userService.findById(1));
+        System.out.println(userService.findById(13));
         System.out.println(userService.findById(100));
 
         System.out.println("-----------");

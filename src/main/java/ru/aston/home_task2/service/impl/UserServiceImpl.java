@@ -53,16 +53,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-       return userDao.findAll();
+        logger.info("try to find all users service level");
+        List<User> users = userDao.findAll();
+        if (!users.isEmpty()) {
+            logger.info("users was found successfully service level");
+        } else {
+            logger.error("users wasn't found service level");
+        }
+        return users;
     }
 
     @Override
     public boolean removeById(int id) {
-        return userDao.removeById(id);
+        logger.info("try to delete user by id {} service level", id);
+        boolean wasRemoved = userDao.removeById(id);
+        if (wasRemoved) {
+            logger.info("user was deleted successfully service level");
+        } else {
+            logger.error("user wasn't to deleted dao level");
+        }
+        return wasRemoved;
     }
 
     @Override
     public Integer update(User user) {
-        return userDao.update(user);
+        logger.info("try to change user by id {} service level", user.getId());
+        Integer id = userDao.update(user);
+        if (id != null) {
+            logger.info("user was saved or updated successfully service level: {}", user);
+        } else {
+            logger.error("user wasn't updated or save service level");
+        }
+        return id;
     }
 }

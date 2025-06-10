@@ -33,13 +33,13 @@ public class UserDaoImpl implements UserDao {
             try {
                 session.persist(user);
                 transaction.commit();
+                logger.info("user saved successfully dao level");
             } catch (Exception e) {
                 logger.error("user wasn't to save dao level");
                 transaction.rollback();
                 throw new SaveUserException();
             }
         }
-        logger.info("user saved successfully dao level");
         return user.getId();
     }
 
@@ -54,8 +54,8 @@ public class UserDaoImpl implements UserDao {
                 transaction.commit();
                 logger.info("user found successfully dao level");
                 return Optional.of(user);
-            } catch (EntityNotFoundException e) {
-                logger.error("user wasn't to find dao level");
+            } catch (Exception e) {
+                logger.error("user wasn't to find dao level", e);
                 transaction.rollback();
                 return Optional.empty();
             }
@@ -66,7 +66,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
-        logger.info("try to find all users");
+        logger.info("try to find all users dao level");
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             try {
@@ -75,8 +75,8 @@ public class UserDaoImpl implements UserDao {
                 logger.info("users found successfully dao level");
             } catch (Exception e) {
                 transaction.rollback();
-                logger.error("users wasn't to find dao level, error: {}", e);
-                return List.<User>of();
+                logger.error("users wasn't to find dao level, error: ", e);
+                return users;
             }
         }
         return users;
@@ -93,10 +93,10 @@ public class UserDaoImpl implements UserDao {
                 User user = optionalUser.get();
                 session.remove(user);
                 transaction.commit();
-                logger.info("user deleted successfully dao level");
+                logger.info("user was deleted successfully dao level");
             } catch (Exception e) {
                 transaction.rollback();
-                logger.error("user wasn't to delete dao level, error: " + e.getMessage());
+                logger.error("user wasn't to deleted dao level ", e);
                 return false;
             }
             return true;
@@ -111,10 +111,10 @@ public class UserDaoImpl implements UserDao {
             try {
                 user = session.merge(user);
                 transaction.commit();
-                logger.info("user saved or updated successfully dao level: {}", user);
+                logger.info("user was saved or updated successfully dao level: {}", user);
             } catch (Exception e) {
                 transaction.rollback();
-                logger.error("user wasn't to update or save dao level, error: " + e.getMessage());
+                logger.error("user wasn't updated or save dao level, error: " + e.getMessage());
                 return null;
             }
             return user.getId();
