@@ -15,6 +15,7 @@ public class Main {
 
 
     public static void main(String[] args) {
+
         UserDao userDao = new UserDaoImpl(ConnectionManager.getSessionFactory());
         UserService userService = new UserServiceImpl(userDao);
 
@@ -22,6 +23,7 @@ public class Main {
         userService.save(user1);
         user1.setAge(50);
         user1.setName("Nick");
+        User user2 = new User("Nick", "ignatkoka@gmail.com", 50);
         System.out.println(userService.update(user1));
         System.out.println("-----------------");
         System.out.println(userService.findById(13));

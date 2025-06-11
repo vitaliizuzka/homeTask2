@@ -35,7 +35,7 @@ public class UserDaoImpl implements UserDao {
                 transaction.commit();
                 logger.info("user saved successfully dao level");
             } catch (Exception e) {
-                logger.error("user wasn't to save dao level");
+                logger.error("user wasn't to save dao level", e);
                 transaction.rollback();
                 throw new SaveUserException();
             }
@@ -114,7 +114,7 @@ public class UserDaoImpl implements UserDao {
                 logger.info("user was saved or updated successfully dao level: {}", user);
             } catch (Exception e) {
                 transaction.rollback();
-                logger.error("user wasn't updated or save dao level, error: " + e.getMessage());
+                logger.error("user wasn't updated or save dao level, error: ", e);
                 return null;
             }
             return user.getId();
