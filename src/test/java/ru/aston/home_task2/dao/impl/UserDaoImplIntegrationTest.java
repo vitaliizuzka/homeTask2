@@ -93,7 +93,9 @@ class UserDaoImplIntegrationTest {
     @Test
     @Order(5)
     void updateShouldUpdateUser() {
-        User user = userDao.findById(1).get();
+        //User user = userDao.findById(1).get();
+        User user = new User("Ignat", "Ignat@gmail.com", 35);
+        user.setId(1);
         user.setName("Nick");
         user.setAge(60);
         Integer idBefore = user.getId();
@@ -106,7 +108,6 @@ class UserDaoImplIntegrationTest {
     void updateShouldSaveUser() {
         User uppdateUser = new User("Vika", "vika@gmail.com", 20);
         assertNull(uppdateUser.getId());
-        Integer idBefore = uppdateUser.getId();
         Integer idAfter = userDao.update(uppdateUser);
         assertNotNull(idAfter);
     }
