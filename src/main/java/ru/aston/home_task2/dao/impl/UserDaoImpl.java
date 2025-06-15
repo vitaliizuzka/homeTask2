@@ -27,7 +27,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Integer save(User user) throws SaveUserException {
-        logger.info("try to save user {} dao level", user);
+        logger.info("trying to save user {} dao level", user);
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             try {
@@ -35,7 +35,7 @@ public class UserDaoImpl implements UserDao {
                 transaction.commit();
                 logger.info("user saved successfully dao level");
             } catch (Exception e) {
-                logger.error("user wasn't to save dao level", e);
+                logger.error("user not saved dao level", e);
                 transaction.rollback();
                 throw new SaveUserException();
             }
@@ -45,7 +45,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findById(int id) {
-        logger.info("try to find user by id {} dao level", id);
+        logger.info("trying to find user by id {} dao level", id);
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             try {
@@ -55,7 +55,7 @@ public class UserDaoImpl implements UserDao {
                 logger.info("user found successfully dao level");
                 return Optional.of(user);
             } catch (Exception e) {
-                logger.error("user wasn't to find dao level", e);
+                logger.error("user not found dao level", e);
                 transaction.rollback();
                 return Optional.empty();
             }
@@ -66,7 +66,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
-        logger.info("try to find all users dao level");
+        logger.info("trying to find all users dao level");
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             try {
@@ -75,7 +75,7 @@ public class UserDaoImpl implements UserDao {
                 logger.info("users found successfully dao level");
             } catch (Exception e) {
                 transaction.rollback();
-                logger.error("users wasn't to find dao level, error: ", e);
+                logger.error("users weren't found, error: ", e);
                 return users;
             }
         }
@@ -84,7 +84,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean removeById(int id) {
-        logger.info("try to delete user by id {} dao level", id);
+        logger.info("trying to delete user by id {} dao level", id);
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             try {
@@ -105,7 +105,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Integer update(User user) {
-        logger.info("try to change user by id {} dao level", user.getId());
+        logger.info("trying to change user by id {} dao level", user.getId());
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             try {
@@ -114,7 +114,7 @@ public class UserDaoImpl implements UserDao {
                 logger.info("user was saved or updated successfully dao level: {}", user);
             } catch (Exception e) {
                 transaction.rollback();
-                logger.error("user wasn't updated or save dao level, error: ", e);
+                logger.error("user wasn't updated or saved dao level, error: ", e);
                 return null;
             }
             return user.getId();

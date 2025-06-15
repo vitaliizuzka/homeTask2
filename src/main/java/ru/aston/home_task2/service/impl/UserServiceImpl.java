@@ -24,20 +24,20 @@ public class UserServiceImpl implements UserService {
     public Integer save(User user) {
 
         Integer id = null;
-        logger.info("try to save user {} service level", user);
+        logger.info("trying to save user {} service level", user);
         try {
             id = userDao.save(user);
             logger.info("user saved successfully service level");
             return id;
         } catch (SaveUserException e) {
-            logger.error("user wasn't save service level, null returned");
+            logger.error("user not saved service level, null returned");
         }
         return null;
     }
 
     @Override
     public Optional<User> findById(int id) {
-        logger.info("try to find user by id {} service level", id);
+        logger.info("trying to find user by id {} service level", id);
         Optional<User> optionalUser = userDao.findById(id);
         return optionalUser
                 .map(user -> {
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
                     return Optional.of(user);
                 })
                 .orElseGet(() -> {
-                    logger.error("user wasn't to find service level");
+                    logger.error("user not found service level");
                     return Optional.empty();
                 });
 
@@ -53,31 +53,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        logger.info("try to find all users service level");
+        logger.info("trying to find all users service level");
         List<User> users = userDao.findAll();
         if (!users.isEmpty()) {
-            logger.info("users was found successfully service level");
+            logger.info("users found successfully service level");
         } else {
-            logger.error("users wasn't found service level");
+            logger.error("users weren't found service level");
         }
         return users;
     }
 
     @Override
     public boolean removeById(int id) {
-        logger.info("try to delete user by id {} service level", id);
+        logger.info("trying to delete user by id {} service level", id);
         boolean wasRemoved = userDao.removeById(id);
         if (wasRemoved) {
             logger.info("user was deleted successfully service level");
         } else {
-            logger.error("user wasn't to deleted dao level");
+            logger.error("user wasn't to deleted service level");
         }
         return wasRemoved;
     }
 
     @Override
     public Integer update(User user) {
-        logger.info("try to change user by id {} service level", user.getId());
+        logger.info("trying to change user by id {} service level", user.getId());
         Integer id = userDao.update(user);
         if (id != null) {
             logger.info("user was saved or updated successfully service level: {}", user);

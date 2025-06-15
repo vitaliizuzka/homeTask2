@@ -122,7 +122,7 @@ class UserDaoImplIntegrationTest {
 
     @Test
     @Order(8)
-    void sizeShouldSizeEqualsTwo() {
+    void findAllShouldSizeEqualsTwo() {
         List<User> users = userDao.findAll();
         assertEquals(users.size(), 2);
     }
@@ -135,7 +135,7 @@ class UserDaoImplIntegrationTest {
 
     @Test
     @Order(10)
-    void sizeShouldSizeEqualsOne() {
+    void findAllShouldSizeEqualsOne() {
         List<User> users = userDao.findAll();
         assertEquals(users.size(), 1);
     }
