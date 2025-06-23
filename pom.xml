@@ -15,6 +15,13 @@
         <junit.version>5.9.2</junit.version>
         <mockito.version>4.11.0</mockito.version>
         <testcontainers.version>1.19.0</testcontainers.version>
+        <postgresql.version>42.7.7</postgresql.version>
+        <hibernate-core.version>7.0.0.Final</hibernate-core.version>
+        <lombok.version>1.18.38</lombok.version>
+        <logback-classic.version>1.5.18</logback-classic.version>
+        <assertj-core.version>3.24.2</assertj-core.version>
+
+        <maven-surefire-plugin>3.0.0</maven-surefire-plugin>
     </properties>
 
 
@@ -22,22 +29,22 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.7</version>
+            <version>${postgresql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>7.0.0.Final</version>
+            <version>${hibernate-core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.38</version>
+            <version>${lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.5.18</version>
+            <version>${logback-classic.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -67,7 +74,7 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.24.2</version>
+            <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -95,25 +102,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>read-project-properties</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <file>src/main/resources/versions.properties</file>
-                            </files>
-                        </configuration>
-                    </execution>
-                </executions>
+                <version>${maven-surefire-plugin}</version>
             </plugin>
         </plugins>
     </build>

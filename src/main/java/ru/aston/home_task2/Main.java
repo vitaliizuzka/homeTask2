@@ -12,18 +12,17 @@ import java.util.Scanner;
 
 public class Main {
 
+    public static final Scanner scanner = new Scanner(System.in);
+    public static final UserDao userDao = new UserDaoImpl(ConnectionManager.getSessionFactory());
+    public  static final UserService userService = new UserServiceImpl(userDao);
+
     public static void main(String[] args) {
 
         UserDao userDao = new UserDaoImpl(ConnectionManager.getSessionFactory());
         UserService userService = new UserServiceImpl(userDao);
 
         boolean isExit = false;
-        Scanner scanner = new Scanner(System.in);
         int operationNumber = 0;
-        Integer id = 0;
-        String name = null;
-        String email = null;
-        int age = 0;
 
         while (!isExit) {
 
@@ -36,45 +35,22 @@ public class Main {
             System.out.println("6. Exit");
 
             try {
-                operationNumber = getIntValue(scanner);
+                operationNumber = getIntValue();
                 switch (operationNumber) {
                     case 1:
-                        System.out.println("Input the name");
-                        name = scanner.nextLine();
-                        System.out.println("Input the email");
-                        email = scanner.nextLine();
-                        System.out.println("Input the age");
-                        age = getIntValue(scanner);
-                        userService.save(new User(name, email, age));
+                        createUser();
                         break;
                     case 2:
-                        System.out.println("User list:");
-                        for (User user : userService.findAll()) {
-                            System.out.println(user);
-                        }
+                        findAllUsers();
                         break;
                     case 3:
-                        System.out.println("Input the user's id");
-                        id = getIntValue(scanner);
-                        Optional<User> optionalUser = userService.findById(id);
-                        optionalUser.ifPresent(System.out::println);
+                        findUserById();
                         break;
                     case 4:
-                        System.out.println("Input the information for user update");
-                        System.out.println("Input the user's id");
-                        id = getIntValue(scanner);
-                        System.out.println("Input the name for updating");
-                        name = scanner.nextLine();
-                        System.out.println("Input the email for updating");
-                        email = scanner.nextLine();
-                        System.out.println("Input the age for updating");
-                        age = getIntValue(scanner);
-                        userService.update(new User(id, name, email, age));
+                        updateUser();
                         break;
                     case 5:
-                        System.out.println("Input the user's id for deleting");
-                        id = getIntValue(scanner);
-                        userService.removeById(id);
+                        deleteUserById();
                         break;
                     case 6:
                         isExit = true;
@@ -92,7 +68,59 @@ public class Main {
         scanner.close();
     }
 
-    public static int getIntValue(Scanner scanner) {
+    public static void createUser(){
+        String name = null;
+        String email = null;
+        int age = 0;
+        System.out.println("Input the name");
+        name = scanner.nextLine();
+        System.out.println("Input the email");
+        email = scanner.nextLine();
+        System.out.println("Input the age");
+        age = getIntValue();
+        userService.save(new User(name, email, age));
+    }
+
+    public static void findAllUsers(){
+        System.out.println("User list:");
+        for (User user : userService.findAll()) {
+            System.out.println(user);
+        }
+    }
+
+    public static void findUserById(){
+        Integer id = 0;
+        System.out.println("Input the user's id");
+        id = getIntValue();
+        Optional<User> optionalUser = userService.findById(id);
+        optionalUser.ifPresent(System.out::println);
+    }
+
+    public static void updateUser(){
+        Integer id = 0;
+        String name = null;
+        String email = null;
+        int age = 0;
+        System.out.println("Input the information for user update");
+        System.out.println("Input the user's id");
+        id = getIntValue();
+        System.out.println("Input the name for updating");
+        name = scanner.nextLine();
+        System.out.println("Input the email for updating");
+        email = scanner.nextLine();
+        System.out.println("Input the age for updating");
+        age = getIntValue();
+        userService.update(new User(id, name, email, age));
+    }
+
+    public static void deleteUserById(){
+        Integer id = 0;
+        System.out.println("Input the user's id for deleting");
+        id = getIntValue();
+        userService.removeById(id);
+    }
+
+    public static int getIntValue() {
         int value = scanner.nextInt();
         scanner.skip("\n");
         return value;
