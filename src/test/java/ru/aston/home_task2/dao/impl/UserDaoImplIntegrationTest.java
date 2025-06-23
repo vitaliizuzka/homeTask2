@@ -1,11 +1,8 @@
 package ru.aston.home_task2.dao.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.SneakyThrows;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -53,12 +50,14 @@ class UserDaoImplIntegrationTest {
     }
 
     @BeforeAll
-    static void beforeAll() {
+    static void beforeAll() throws SaveUserException {
         Configuration configuration = new Configuration();
         configuration.setProperties(testProperties);
         configuration.addAnnotatedClass(User.class);
         sessionFactory = configuration.buildSessionFactory();
         userDao = new UserDaoImpl(sessionFactory);
+
+        userDao.save(new User("Vika", "vika@gmail.com", 30));
     }
 
     @Test
@@ -93,11 +92,7 @@ class UserDaoImplIntegrationTest {
     @Test
     @Order(5)
     void updateShouldUpdateUser() {
-        //User user = userDao.findById(1).get();
-        User user = new User("Ignat", "Ignat@gmail.com", 35);
-        user.setId(1);
-        user.setName("Nick");
-        user.setAge(60);
+        User user = new User(1, "Nick", "nick@gmail.com", 20);
         Integer idBefore = user.getId();
         Integer idAfter = userDao.update(user);
         assertEquals(idBefore, idAfter);
@@ -105,46 +100,35 @@ class UserDaoImplIntegrationTest {
 
     @Test
     @Order(6)
-    void updateShouldSaveUser() {
-        User uppdateUser = new User("Vika", "vika@gmail.com", 20);
-        assertNull(uppdateUser.getId());
-        Integer idAfter = userDao.update(uppdateUser);
-        assertNotNull(idAfter);
-    }
-
-    @Test
-    @Order(7)
     void updateShouldNotUpdateWithUniqueEmailUser() {
-        User user = userDao.findById(1).get();
-        user.setEmail("vika@gmail.com");
+        User user = new User(2, "Nick", "nick@gmail.com", 20);
         assertNull(userDao.update(user));
     }
 
     @Test
-    @Order(8)
+    @Order(7)
     void findAllShouldSizeEqualsTwo() {
         List<User> users = userDao.findAll();
         assertEquals(users.size(), 2);
     }
 
     @Test
-    @Order(9)
+    @Order(8)
     void removeByIdShouldRemoveUser() {
         assertTrue(userDao.removeById(1));
     }
 
     @Test
-    @Order(10)
+    @Order(9)
     void findAllShouldSizeEqualsOne() {
         List<User> users = userDao.findAll();
         assertEquals(users.size(), 1);
     }
 
     @Test
-    @Order(11)
+    @Order(10)
     void removeByIdShouldNotRemoveUser() {
         assertFalse(userDao.removeById(10));
     }
-
 
 }

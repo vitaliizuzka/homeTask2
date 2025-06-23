@@ -39,16 +39,12 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findById(int id) {
         logger.info("trying to find user by id {} service level", id);
         Optional<User> optionalUser = userDao.findById(id);
-        return optionalUser
-                .map(user -> {
-                    logger.info("user found successfully service level");
-                    return Optional.of(user);
-                })
-                .orElseGet(() -> {
-                    logger.error("user not found service level");
-                    return Optional.empty();
-                });
-
+        if(optionalUser.isPresent()){
+            logger.info("user found successfully service level");
+        }else {
+            logger.info("user found successfully service level");
+        }
+        return optionalUser;
     }
 
     @Override
