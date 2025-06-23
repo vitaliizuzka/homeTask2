@@ -1,8 +1,5 @@
 package ru.aston.home_task2;
 
-import org.hibernate.Session;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ru.aston.home_task2.dao.UserDao;
 import ru.aston.home_task2.dao.impl.UserDaoImpl;
 import ru.aston.home_task2.model.entity.User;
@@ -15,13 +12,12 @@ import java.util.Scanner;
 
 public class Main {
 
-
     public static void main(String[] args) {
 
         UserDao userDao = new UserDaoImpl(ConnectionManager.getSessionFactory());
         UserService userService = new UserServiceImpl(userDao);
 
-        boolean fExit = false;
+        boolean isExit = false;
         Scanner scanner = new Scanner(System.in);
         int operationNumber = 0;
         Integer id = 0;
@@ -29,7 +25,7 @@ public class Main {
         String email = null;
         int age = 0;
 
-        while (!fExit) {
+        while (!isExit) {
 
             System.out.println("Input the number of operation");
             System.out.println("1. Creating");
@@ -40,8 +36,7 @@ public class Main {
             System.out.println("6. Exit");
 
             try {
-                operationNumber = scanner.nextInt();
-                scanner.skip("\n");
+                operationNumber = getIntValue(scanner);
                 switch (operationNumber) {
                     case 1:
                         System.out.println("Input the name");
@@ -49,10 +44,8 @@ public class Main {
                         System.out.println("Input the email");
                         email = scanner.nextLine();
                         System.out.println("Input the age");
-                        age = scanner.nextInt();
-
+                        age = getIntValue(scanner);
                         userService.save(new User(name, email, age));
-
                         break;
                     case 2:
                         System.out.println("User list:");
@@ -62,33 +55,32 @@ public class Main {
                         break;
                     case 3:
                         System.out.println("Input the user's id");
-                        id = scanner.nextInt();
-                        scanner.skip("\n");
+                        id = getIntValue(scanner);
                         Optional<User> optionalUser = userService.findById(id);
                         optionalUser.ifPresent(System.out::println);
                         break;
                     case 4:
                         System.out.println("Input the information for user update");
                         System.out.println("Input the user's id");
-                        id = scanner.nextInt();
-                        scanner.skip("\n");
+                        id = getIntValue(scanner);
                         System.out.println("Input the name for updating");
                         name = scanner.nextLine();
                         System.out.println("Input the email for updating");
                         email = scanner.nextLine();
                         System.out.println("Input the age for updating");
-                        age = scanner.nextInt();
+                        age = getIntValue(scanner);
                         userService.update(new User(id, name, email, age));
                         break;
                     case 5:
                         System.out.println("Input the user's id for deleting");
-                        id = scanner.nextInt();
-                        scanner.skip("\n");
+                        id = getIntValue(scanner);
                         userService.removeById(id);
                         break;
                     case 6:
-                        fExit = true;
+                        isExit = true;
                         break;
+                    default:
+                        throw new RuntimeException();
                 }
             } catch (Exception e) {
                 System.out.println("Input error, try again");
@@ -97,6 +89,13 @@ public class Main {
                 }
             }
         }
+        scanner.close();
+    }
+
+    public static int getIntValue(Scanner scanner) {
+        int value = scanner.nextInt();
+        scanner.skip("\n");
+        return value;
     }
 
 }
