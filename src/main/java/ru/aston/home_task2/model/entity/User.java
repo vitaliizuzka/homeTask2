@@ -22,11 +22,9 @@ public class User implements Serializable {
     private String email;
     private int age;
     @Column(name = "created_at")
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
-    {
-        createdAt = LocalDateTime.now();
-    }
+
 
     public User() {
     }
@@ -35,6 +33,18 @@ public class User implements Serializable {
         this.name = name;
         this.email = email;
         this.age = age;
+    }
+
+    public User(Integer id, String name, String email, int age) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.age = age;
+    }
+
+    @PrePersist
+    public void prePersist(){
+        createdAt = LocalDateTime.now();
     }
 
     @Override

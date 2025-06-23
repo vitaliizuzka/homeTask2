@@ -109,6 +109,8 @@ public class UserDaoImpl implements UserDao {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             try {
+                User updatedUser = findById(user.getId()).get();
+                user.setCreatedAt(updatedUser.getCreatedAt());
                 user = session.merge(user);
                 transaction.commit();
                 logger.info("user was saved or updated successfully dao level: {}", user);
