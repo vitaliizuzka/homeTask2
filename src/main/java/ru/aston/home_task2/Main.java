@@ -18,9 +18,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        UserDao userDao = new UserDaoImpl(ConnectionManager.getSessionFactory());
-        UserService userService = new UserServiceImpl(userDao);
-
         boolean isExit = false;
         int operationNumber = 0;
 
@@ -89,7 +86,7 @@ public class Main {
     }
 
     public static void findUserById(){
-        Integer id = 0;
+        int id = 0;
         System.out.println("Input the user's id");
         id = getIntValue();
         Optional<User> optionalUser = userService.findById(id);
@@ -97,7 +94,7 @@ public class Main {
     }
 
     public static void updateUser(){
-        Integer id = 0;
+        int id = 0;
         String name = null;
         String email = null;
         int age = 0;
@@ -114,7 +111,7 @@ public class Main {
     }
 
     public static void deleteUserById(){
-        Integer id = 0;
+        int id = 0;
         System.out.println("Input the user's id for deleting");
         id = getIntValue();
         userService.removeById(id);
